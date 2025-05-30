@@ -28,6 +28,12 @@ const LocationScreen = ({ navigation }) => {
     setIsLoading(true);
 
     try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission denied', 'Location permission is required.');
+        setIsLoading(false);
+        return;
+      }
 
       const location = await Location.geocodeAsync(trimmedName);
 
